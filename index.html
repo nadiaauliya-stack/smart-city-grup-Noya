@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Noya and the Smart City</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #a8d8ff 0%, #c8a8ff 40%, #ffb3d9 70%, #ffd6a5 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .rainbow {
+      position: fixed;
+      bottom: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 500px;
+      border-radius: 50% 50% 0 0;
+      border: 48px solid transparent;
+      border-top: 48px solid #ff6b6b;
+      box-shadow: 0 -48px 0 #ffb347, 0 -96px 0 #ffe066, 0 -144px 0 #7ed321, 0 -192px 0 #4fc3f7, 0 -240px 0 #b39ddb;
+      opacity: 0.7;
+      z-index: 0;
+    }
+    .star {
+      position: fixed;
+      color: white;
+      font-size: 20px;
+      z-index: 0;
+      animation: twinkle 2s infinite alternate;
+    }
+    @keyframes twinkle { from { opacity: 0.4; } to { opacity: 1; } }
+    .main {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+    .logo-wrap {
+      background: #ff69b4;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      padding: 24px 20px;
+      text-align: center;
+      min-width: 180px;
+      box-shadow: 0 0 0 6px white, 0 0 0 12px #ffb3d9;
+    }
+    .logo-rainbow {
+      width: 80px; height: 40px;
+      border-radius: 40px 40px 0 0;
+      border: 8px solid transparent;
+      border-top: 8px solid #ff6b6b;
+      box-shadow: 0 -8px 0 #ffe066, 0 -16px 0 #7ed321, 0 -24px 0 #4fc3f7;
+      margin: 0 auto 12px;
+    }
+    .logo-title {
+      font-size: 36px; font-weight: 900; color: white;
+      text-shadow: 3px 3px 0 #c2185b, -1px -1px 0 #c2185b;
+      letter-spacing: 2px; line-height: 1;
+    }
+    .logo-title span { color: #ffe066; }
+    .logo-sub { font-size: 11px; font-weight: 800; color: white; letter-spacing: 2px; margin-top: 6px; text-transform: uppercase; }
+    .logo-x { font-size: 24px; color: white; margin-top: 8px; font-weight: 900; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      width: 620px;
+    }
+    .card { background: white; border-radius: 20px; padding: 14px; }
+    .card-lamp { grid-column: span 2; display: flex; align-items: center; gap: 14px; border-radius: 24px; }
+    .lamp-label { font-size: 20px; font-weight: 800; color: #333; }
+    .toggle { position: relative; width: 52px; height: 28px; cursor: pointer; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .t-slider { position: absolute; inset: 0; background: #ddd; border-radius: 28px; transition: 0.3s; }
+    .t-slider:before { content: ""; position: absolute; height: 20px; width: 20px; left: 4px; bottom: 4px; background: white; border-radius: 50%; transition: 0.3s; }
+    input:checked + .t-slider { background: #b39ddb; }
+    input:checked + .t-slider:before { transform: translateX(24px); }
+    .card-roof { display: flex; flex-direction: column; align-items: center; gap: 8px; grid-row: span 2; border: 3px solid; border-image: linear-gradient(#ff6b6b,#ffe066,#7ed321,#4fc3f7,#b39ddb) 1; border-radius: 20px; overflow: hidden; }
+    .roof-title { font-size: 16px; font-weight: 800; color: #333; }
+    .card-garage { border: 2.5px solid #ffb3d9; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+    .garage-row { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: #333; }
+    .garage-pill-wrap { background: linear-gradient(90deg, #b39ddb, #ce93d8); border-radius: 20px; padding: 4px 6px; }
+    .garage-pill { background: white; border-radius: 16px; padding: 4px 12px; font-size: 12px; font-weight: 800; color: #9c27b0; cursor: pointer; user-select: none; transition: 0.2s; }
+    .door-img { width: 60px; height: 80px; background: linear-gradient(180deg, #ff9800, #f44336); border-radius: 8px 8px 0 0; position: relative; overflow: hidden; margin: auto; }
+    .door-img::after { content: ""; position: absolute; top: 10%; left: 50%; transform: translateX(-50%); width: 3px; height: 80%; background: rgba(0,0,0,0.25); }
+    .card-croos { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; border-radius: 30px; padding: 12px; }
+    .croos-bar { width: 32px; height: 70px; background: linear-gradient(180deg, #90caf9, #42a5f5); border-radius: 16px; transition: background 0.3s; }
+    .card-door-label { background: linear-gradient(90deg, #4caf50, #cddc39, #ffeb3b); border-radius: 30px; display: flex; align-items: center; justify-content: center; padding: 10px 16px; }
+    .door-label { font-size: 22px; font-weight: 900; color: white; text-shadow: 1px 1px 0 rgba(0,0,0,0.2); }
+    .oc-wrap { display: flex; gap: 8px; align-items: center; justify-content: center; }
+    .oc-btn { width: 36px; height: 36px; border-radius: 50%; border: 3px solid #333; background: white; font-size: 13px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+    .oc-btn:hover { transform: scale(1.1); }
+    .oc-btn.on { background: #4caf50; border-color: #4caf50; color: white; }
+    .oc-btn.off { background: #f44336; border-color: #f44336; color: white; }
+    .oc-btn.on-purple { background: #7c4dff; border-color: #7c4dff; color: white; }
+    .card-star { border: 2.5px dashed #b39ddb; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 16px; }
+    .star-4 { width: 56px; height: 56px; background: linear-gradient(135deg, #7c4dff, #ce93d8); clip-path: polygon(50% 0%,55% 45%,100% 50%,55% 55%,50% 100%,45% 55%,0% 50%,45% 45%); }
+    .status-text { font-size: 11px; color: #999; font-weight: 600; text-align: center; }
+    .door-col { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  </style>
+</head>
+<body>
+
+<div class="rainbow"></div>
+<span class="star" style="top:8%;left:5%">✦</span>
+<span class="star" style="top:15%;left:15%;animation-delay:.3s">✦</span>
+<span class="star" style="top:5%;right:10%;animation-delay:.6s">✦</span>
+<span class="star" style="top:20%;right:20%;animation-delay:.9s;font-size:14px">✦</span>
+<span class="star" style="bottom:25%;left:8%;animation-delay:.5s">✦</span>
+<span class="star" style="bottom:35%;right:5%;animation-delay:.2s;font-size:14px">✦</span>
+
+<div class="main">
+  <!-- Logo -->
+  <div class="logo-wrap">
+    <div class="logo-rainbow"></div>
+    <div class="logo-title">N<span>O</span>YA</div>
+    <div class="logo-sub">and the<br>Smart City</div>
+    <div class="logo-x">✖</div>
+  </div>
+
+  <!-- Grid -->
+  <div class="grid">
+
+    <!-- Lamp -->
+    <div class="card card-lamp">
+      <span class="lamp-label">Lamp</span>
+      <label class="toggle">
+        <input type="checkbox" onchange="document.getElementById('lamp-s').textContent=this.checked?'ON':'OFF'">
+        <span class="t-slider"></span>
+      </label>
+      <span class="status-text" id="lamp-s">OFF</span>
+    </div>
+
+    <!-- Roof -->
+    <div class="card card-roof">
+      <div class="roof-title">Roof</div>
+      <div class="oc-wrap" style="flex-direction:column;gap:6px">
+        <button class="oc-btn on" id="roof-o" onclick="setOC('roof',false)">O</button>
+        <button class="oc-btn" id="roof-c" onclick="setOC('roof',true)">C</button>
+      </div>
+      <span class="status-text" id="roof-s">Open</span>
+    </div>
+
+    <!-- Garage -->
+    <div class="card card-garage">
+      <div class="garage-row">
+        <span>On</span>
+        <div class="garage-pill-wrap">
+          <div class="garage-pill" id="garage-pill" onclick="toggleGarage()">Garage</div>
+        </div>
+        <span>Off</span>
+      </div>
+      <span class="status-text" id="garage-s">ON</span>
+    </div>
+
+    <!-- Door image -->
+    <div class="card" style="display:flex;align-items:center;justify-content:center;padding:8px;">
+      <div class="door-img"></div>
+    </div>
+
+    <!-- Croos -->
+    <div class="card card-croos">
+      <div class="croos-bar" id="croos-bar"></div>
+      <span style="font-size:14px;font-weight:800;color:#333;">Croos</span>
+      <span class="status-text" id="croos-s">Open</span>
+    </div>
+
+    <!-- Door label + OC -->
+    <div class="door-col">
+      <div class="card-door-label" style="width:100%;">
+        <span class="door-label">Door</span>
+      </div>
+      <div class="oc-wrap">
+        <button class="oc-btn on" id="door-o" onclick="setOC('door',false)">O</button>
+        <button class="oc-btn" id="door-c" onclick="setOC('door',true)">C</button>
+      </div>
+      <span class="status-text" id="door-s">Open</span>
+    </div>
+
+    <!-- Star/Spotlight -->
+    <div class="card card-star">
+      <div class="star-4" id="star-icon"></div>
+      <div class="oc-wrap">
+        <button class="oc-btn" id="star-o" onclick="setOC('star',false)">O</button>
+        <button class="oc-btn off" id="star-c" onclick="setOC('star',true)">C</button>
+      </div>
+      <span class="status-text" id="star-s">Off</span>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  let garageOn = true;
+  function toggleGarage() {
+    garageOn = !garageOn;
+    document.getElementById('garage-s').textContent = garageOn ? 'ON' : 'OFF';
+    document.getElementById('garage-pill').style.background = garageOn ? 'white' : '#f3e5f5';
+  }
+
+  function setOC(name, close) {
+    const o = document.getElementById(name+'-o');
+    const c = document.getElementById(name+'-c');
+    const s = document.getElementById(name+'-s');
+    o.className = 'oc-btn' + (!close ? (name==='star'?' on-purple':' on') : '');
+    c.className = 'oc-btn' + (close ? ' off' : '');
+    if (name === 'croos') {
+      document.getElementById('croos-bar').style.background = close
+        ? 'linear-gradient(180deg,#ef9a9a,#e53935)'
+        : 'linear-gradient(180deg,#90caf9,#42a5f5)';
+    }
+    if (name === 'star') {
+      document.getElementById('star-icon').style.background = close
+        ? '#ccc'
+        : 'linear-gradient(135deg,#7c4dff,#ce93d8)';
+    }
+    s.textContent = name==='star' ? (close?'Off':'On') : (close?'Closed':'Open');
+  }
+</script>
+</body>
+</html>
